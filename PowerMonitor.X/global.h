@@ -5,6 +5,7 @@
  * Created on May 4, 2016, 1:34 PM
  */
 #include <stdio.h>
+#include <pic18f14k22.h>
 
 #ifndef GLOBAL_H
 #define	GLOBAL_H

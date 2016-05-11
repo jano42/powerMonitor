@@ -1,7 +1,10 @@
 #include "adc.h"
+#include "mcc_generated_files/mcc.h"
 #include "pin_mapping.h"
 #include "global.h"
 #include "uart.h"
+#include "math.h"
+
 
 void ADC_Initialize()
 {
@@ -34,38 +37,69 @@ void ADC_Initialize()
     
 }
 
-void ADC_Acquire(unsigned char channel, unsigned short * result)
+void ADC_SetChannel(unsigned char channel)
 {
-    //select channel CT1, ADC ON, go/done at 0
+    //select channel
     ADCON0bits.CHS = channel;
 
     __delay_ms(1);
-    
+}
+
+short ADC_AcquireRaw()
+{
     //start the conversion
     ADCON0bits.GO = 1;
     
     //wait until conversion ends
     while(ADCON0bits.GO == 1);
  
-    *result = (ADRESH<<8) + ADRESL;
+    return (ADRESH<<8) + ADRESL;
 }
 
-void ADC_AcquireAll(unsigned short * ct1, unsigned short * ct2, unsigned short * ct3)
+short ADC_Acquire_FVR()
 {
-    unsigned short fvr;
-    ADC_Acquire(0b1111, &fvr); //FVR
+    ADC_SetChannel(0b1111);
+    return ADC_AcquireRaw();
+}
+
+double ADC_Acquire_CT_100(unsigned char channel, int n)
+{
+    int raw;
+    unsigned long sumP2 = 0;
+
+    ADC_SetChannel(channel);
+    for(int i=0; i<n; ++i)
+    {
+        raw = ADC_AcquireRaw() - 512;
+        sumP2 += raw*raw;
+        __delay_us(100);
+    }
     
-    sprintf(buffer, "fvr=%u;", fvr);
+    double meanCt3P2 = (double)sumP2 / (double)n;
+    return sqrt(meanCt3P2);
+
+}
+
+double ADC_Adjust(double adcValue, double fvr)
+{
+        //adjust CT to VCC using FVR value
+
+    return adcValue * 1.024 / fvr;
+}
+
+void ADC_AcquireAll(double *fvr, double * fct1, double * fct2, double * fct3)
+{
+    //acquire and display FVR
+    *fvr = (double)ADC_Acquire_FVR();
+    
+    double adcValue = ADC_Acquire_CT_100(CT3_CHANNEL, 200);
+    
+    //acquire and display CT3
+    //*fct1 = ADC_Adjust(adcValue, *fvr);
+    //*fct2 = ADC_Adjust(ADC_Acquire_CT_100(CT2_CHANNEL, 200), *fvr);
+    *fct3 = ADC_Adjust(adcValue, *fvr);
+    
+    sprintf(buffer, "fvr=%.0f adcValue=%f", *fvr, adcValue);
     UART_Puts(buffer);
-    
-    int rssi = (((int)((-0.4049*fvr) + 236.03 + 0.5)) / 5) *5;
-    sprintf(buffer, "rssi=%d;", rssi);
-    UART_Puts(buffer);
-    
-    
-    
-    //ADC_Acquire(CT1_CHANNEL, ct1);
-    //ADC_Acquire(CT2_CHANNEL, ct2);
-    //ADC_Acquire(CT3_CHANNEL, ct3);
 }
 

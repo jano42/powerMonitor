@@ -5,8 +5,6 @@
  * Created on May 3, 2016, 2:52 PM
  */
 
-#include "mcc_generated_files/mcc.h"
-
 #ifndef UART_H
 #define	UART_H
 

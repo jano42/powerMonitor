@@ -45,13 +45,14 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
  */
 
 #include "mcc_generated_files/mcc.h"
-
 #include "pin_mapping.h"
 #include "rf68w.h"
 #include "tools.h"
 #include "adc.h"
 #include "uart.h"
 #include "global.h"
+#include "calc.h"
+
 /*
                          Main application
  */
@@ -105,20 +106,30 @@ void main(void)
 
     //initialize RF68w
     //rf68w_powerup();
-    unsigned short ct1, ct2, ct3;
+    double fvr, ct1, ct2, ct3;
     
     while (1)
     {
         UART_Putc(0xA5);
         //make ADC
-        ADC_AcquireAll(&ct1, &ct2, &ct3);
+        ADC_AcquireAll(&fvr, &ct1, &ct2, &ct3);
 
+        int rssi = CALC_rssi(fvr);
+        
+        sprintf(buffer, "rssi=%d", rssi);
+        UART_Puts(buffer);
+
+        sprintf(buffer, "ct3=%fW", ct3);
+        UART_Puts(buffer);
+
+        sprintf(buffer, "rms3=%fW", CALC_adcValue2rms(ct3));
+        //sprintf(buffer, "ct1=%.4fW ct2=%.4fW ct3=%.4f", CALC_adcValue2rms(ct1), CALC_adcValue2rms(ct2), CALC_adcValue2rms(ct3));
+        UART_Puts(buffer);
+        
         //send values
         LED_ON();
         
         delay_1s(1);
-        sprintf(buffer, "V1=%u;", ct1);
-        UART_Puts(buffer);
         
         LED_OFF();
         

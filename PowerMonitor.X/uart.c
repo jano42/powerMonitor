@@ -1,7 +1,5 @@
-#include <pic18f14k22.h>
-
 #include "uart.h"
-#include "pin_mapping.h"
+#include "mcc_generated_files/mcc.h"
 
 void UART_Initialize()
 {
