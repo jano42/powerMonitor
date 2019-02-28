@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/calc.c</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/uart.c</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/adc.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/main.c</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/calc.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/tools.c</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/adc.c</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/tools.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/mcc_generated_files/pin_manager.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/global.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/uart.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/pin_mapping.h</file>
-            <file>file:/F:/ProjetsPerso/PowerMonitor/PowerMonitor.X/rf68w.c</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
